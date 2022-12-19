@@ -21,6 +21,7 @@ namespace Intive.Core.Entities
         [StringLength(13)]
         public string ISBN { get; set; }
         public DateTime PublicationDate { get; set; }
+        public List<BookAuthor> BookAuthors { get; set; }
 
     }
 }

@@ -21,6 +21,7 @@ namespace Intive.Core.Entities
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
+        public List<BookAuthor> BookAuthors { get; set; }
 
     }
 }
