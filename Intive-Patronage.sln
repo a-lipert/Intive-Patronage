@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intive.Business", "Intive.Business\Intive.Business.csproj", "{62E0F00C-B1EB-4F78-99A8-E3F10AA7782C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intive.Api", "Intive.Api\Intive.Api.csproj", "{A6E36BD6-4907-4A03-907A-E1E9457A7BE1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B3A33EC2-3253-4FF1-A177-3D362E2CCD77} = {B3A33EC2-3253-4FF1-A177-3D362E2CCD77}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
