@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Intive.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace Intive.Core.Database
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
         }
+
+        public DbSet<Book> Books { get; set; }
     }
 }
