@@ -1,6 +1,5 @@
 ﻿using Intive.Core.Database;
 using Intive.Core.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Intive.Core.Repository
 {
@@ -12,39 +11,53 @@ namespace Intive.Core.Repository
             _appDbContext = appDbContext;
         }
 
-        public bool Create(Book book)
-        {
-            _appDbContext.Books.Add(book);
-            return true;
-        }
-
-        public IEnumerable<Book> GetAllBooks()
-        {
-            return _appDbContext.Books.OrderBy(x => x.Title).ToList();
-        }
-
-        public Book? GetById(int id)
+        public Book GetById(int id)
         {
             return _appDbContext.Books.Find(id);
         }
 
-        public Book? GetByTitle(string title)
+        public Book GetByTitle(string title)
         {
             return _appDbContext.Books.FirstOrDefault(x => x.Title == title);
         }
 
-        public bool Update(Book book)
+        public bool Update(int id, Book book)
         {
-            _appDbContext.Entry(book).State = EntityState.Modified;
-            return true;
-        }
-        public bool Delete(int id)
-        {
-            var book = _appDbContext.Books.Find(id);
-            _appDbContext.Books.Remove(book);
-            return true;
+            var bookToUpdate = _appDbContext.Books.Find(id);
+            if (bookToUpdate != null)
+            {
+                bookToUpdate.Title = book.Title;
+                bookToUpdate.Description = book.Description;
+                bookToUpdate.Rating = book.Rating;
+                bookToUpdate.ISBN = book.ISBN;
+                bookToUpdate.PublicationDate = book.PublicationDate;
+
+                _appDbContext.SaveChanges();
+                return true;
+
+            };
+            return false;
         }
 
-        
+        public void Delete(int id)
+        {
+            var bookToDelete = _appDbContext.Books.Find(id);
+            if (bookToDelete != null) 
+            _appDbContext.Books.Remove(bookToDelete);
+            _appDbContext.SaveChanges();
+        }
+
+        public void Create<T>(T entity)
+        {
+            var book = new Book();
+
+            _appDbContext.Books.Add(book);
+            _appDbContext.SaveChanges();
+        }
+
+        public List<Book> GetAll()
+        {
+            return _appDbContext.Books.OrderBy(x => x.Title).ToList();
+        }
     }
 }

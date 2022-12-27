@@ -1,22 +1,12 @@
 ﻿using Intive.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intive.Core.Repository
 {
-    public interface IBookRepository
+    public interface IBookRepository : IBaseRepository<Book>
     {
-        IEnumerable<Book> GetAllBooks();
-        Book? GetById(int id); 
-        Book? GetByTitle(string title);
-        bool Create(Book book); 
-        bool Update(Book book);
-        bool Delete(int id);
-
-
-
+        Book GetById(int id); 
+        Book GetByTitle(string title);
+        bool Update(int id, Book book);
+        void Delete(int id);
     }
 }

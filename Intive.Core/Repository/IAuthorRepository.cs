@@ -2,11 +2,8 @@
 
 namespace Intive.Core.Repository
 {
-    public interface IAuthorRepository
+    public interface IAuthorRepository : IBaseRepository<Author>
     {
-        IEnumerable<Author> GetAllAuthors();
         Author? GetByName(string name);
-        bool Create(Author author);
-        
     }
 }
