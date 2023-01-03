@@ -2,7 +2,6 @@
 using Intive.Business.Models;
 using Intive.Core.Entities;
 using Intive.Core.Repository;
-using System.ComponentModel.DataAnnotations;
 
 namespace Intive.Business.Services
 {
@@ -36,9 +35,12 @@ namespace Intive.Business.Services
         }
 
         public List<Author> GetAll() => _authorRepository.GetAll();
-        
-        public Author? GetByName(string name) => _authorRepository.GetByName(name);
-        
+
+        public Author? GetByName(string name)
+        {
+            ArgumentNullException.ThrowIfNull(name);
+            return _authorRepository.GetByName(name);
+        }
 
         private static List<ValidationError> IsValid(AuthorModel author)
         {
@@ -54,8 +56,6 @@ namespace Intive.Business.Services
                 validationResults.Add(new ValidationError(ValidationConstants.IsTooLong, nameof(author.LastName)));
             if (author.BirthDate.Equals(DateTime.MinValue))
                 validationResults.Add(new ValidationError(ValidationConstants.FieldIsRequired, nameof(author.BirthDate)));
-            if (author.Gender.Equals(null))
-                validationResults.Add(new ValidationError(ValidationConstants.FieldIsRequired, nameof(author.Gender)));
             
             return validationResults;
         }

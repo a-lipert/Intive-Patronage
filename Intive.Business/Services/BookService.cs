@@ -2,13 +2,6 @@
 using Intive.Business.Models;
 using Intive.Core.Entities;
 using Intive.Core.Repository;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intive.Business.Services
 {
@@ -80,21 +73,26 @@ namespace Intive.Business.Services
             if (book.ISBN.Equals(null))
                 validationResults.Add(new ValidationError(ValidationConstants.FieldIsRequired, nameof(book.ISBN)));
             if (book.ISBN.Length != 13)
-                validationResults.Add(new ValidationError(ValidationConstants.IsTooLong, nameof(book.ISBN)));
-            if (book.PublicationDate.Equals(null))
+                validationResults.Add(new ValidationError("ISBN number must be 13 digits long", nameof(book.ISBN)));
+            if (book.PublicationDate == DateTime.MinValue)
                 validationResults.Add(new ValidationError(ValidationConstants.FieldIsRequired, nameof(book.PublicationDate)));
 
-
             return validationResults;
-
 
         }
 
         public Book? GetById(int id) =>  _bookRepository.GetById(id);
-        public Book? GetByTitle(string title) => _bookRepository.GetByTitle(title);
+        public Book? GetByTitle(string title)
+        {
+            ArgumentNullException.ThrowIfNull(title);
+            return _bookRepository.GetByTitle(title);
+        }
         public List<Book> GetAll() => _bookRepository.GetAll();
-        public void DeleteBook(int id) => _bookRepository.Delete(id);
-
+        public void DeleteBook(int id)
+        {
+            if(id>0)
+            _bookRepository.Delete(id);
+        }
         
     }
 } 
