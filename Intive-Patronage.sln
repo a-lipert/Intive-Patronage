@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Api", "Intive.Api\In
 		{B3A33EC2-3253-4FF1-A177-3D362E2CCD77} = {B3A33EC2-3253-4FF1-A177-3D362E2CCD77}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intive.Tests", "Intive-Patrongae.Tests\Intive.Tests.csproj", "{08FA559D-4D2D-486D-B68C-9A863C6BAD51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{A6E36BD6-4907-4A03-907A-E1E9457A7BE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6E36BD6-4907-4A03-907A-E1E9457A7BE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6E36BD6-4907-4A03-907A-E1E9457A7BE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FA559D-4D2D-486D-B68C-9A863C6BAD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FA559D-4D2D-486D-B68C-9A863C6BAD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FA559D-4D2D-486D-B68C-9A863C6BAD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FA559D-4D2D-486D-B68C-9A863C6BAD51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
