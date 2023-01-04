@@ -93,7 +93,12 @@ namespace Intive.Business.Services
             if(id>0)
             _bookRepository.Delete(id);
         }
-        
+
+        public Book? SearchBookByTitlePart(string query)
+        {
+            ArgumentNullException.ThrowIfNull(query);
+            return _bookRepository.SearchBookByTitlePart(query);
+        }
     }
 } 
 

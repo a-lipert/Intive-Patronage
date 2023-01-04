@@ -19,7 +19,7 @@ namespace Intive.Api.Controllers
 
         // GET/authors
         [HttpGet]
-        public ActionResult GetAllAuthors()
+        public IActionResult GetAllAuthors()
         {
             var allAuthors = _authorService.GetAll();
             return Ok(allAuthors);
@@ -27,7 +27,7 @@ namespace Intive.Api.Controllers
 
         // POST/authors/create
         [HttpPost("create")]
-        public ActionResult CreateAuthor(AuthorModel author)
+        public IActionResult CreateAuthor(AuthorModel author)
         {
             _authorService.CreateAuthor(author);
             return Ok();
@@ -36,7 +36,7 @@ namespace Intive.Api.Controllers
 
         // GET/authors/name
         [HttpGet("{name}")]
-        public ActionResult GetByName(string name)
+        public IActionResult GetByName(string name)
         {
             var authorByName = _authorService.GetByName(name);
 

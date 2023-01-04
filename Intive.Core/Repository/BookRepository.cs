@@ -1,5 +1,6 @@
 ﻿using Intive.Core.Database;
 using Intive.Core.Entities;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Intive.Core.Repository
 {
@@ -19,6 +20,12 @@ namespace Intive.Core.Repository
         public Book GetByTitle(string title)
         {
             return _appDbContext.Books.FirstOrDefault(x => x.Title == title);
+        }
+
+        public Book SearchBookByTitlePart(string query)
+        {
+            var book = _appDbContext.Books.FirstOrDefault(x => x.Title.Contains(query));
+            return book;
         }
 
         public bool Update(int id, Book book)

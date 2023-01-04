@@ -6,6 +6,7 @@ namespace Intive.Core.Repository
     {
         Book GetById(int id); 
         Book GetByTitle(string title);
+        Book SearchBookByTitlePart(string query);
         bool Update(int id, Book book);
         void Delete(int id);
     }
