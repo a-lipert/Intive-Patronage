@@ -1,17 +1,13 @@
 ﻿using Intive.Core.Entities;
-using Intive.Core.Migrations;
+using Intive.Core.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intive.Core.Database
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
@@ -26,6 +22,17 @@ namespace Intive.Core.Database
                 .HasOne(a => a.Author)
                 .WithMany(ba => ba.BookAuthors)
                 .HasForeignKey(a => a.AuthorId);
+
+            //value converter
+             
+            var converter = new ValueConverter<Gender, bool>(
+            g => g == Gender.Male ? false : true,
+            g => (Gender)Enum.ToObject(typeof(Gender), g));
+
+            modelBuilder
+                .Entity<Author>()
+                .Property(p => p.Gender)
+                .HasConversion(converter);
         }
 
         public DbSet<Book> Books { get; set; }

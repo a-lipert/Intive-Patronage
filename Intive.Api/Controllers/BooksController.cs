@@ -20,7 +20,7 @@ namespace Intive.Api.Controllers
 
         // GET/books
         [HttpGet]
-        public ActionResult GetAllBooks()
+        public IActionResult GetAllBooks()
         {
             var allBooks = _bookService.GetAll();
             return Ok(allBooks);
@@ -28,7 +28,7 @@ namespace Intive.Api.Controllers
 
         // GET/books/id
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public IActionResult GetById(int id)
         {
             var book = _bookService.GetById(id);
 
@@ -37,9 +37,33 @@ namespace Intive.Api.Controllers
             return Ok(book);
         }
 
+        
+
+        // GET/books/title
+        [HttpGet("{title}")]
+        public IActionResult GetByTitle(string title)
+        {
+            var book = _bookService.GetByTitle(title);
+
+            if (title == null)
+                return NotFound();
+            return Ok(book);
+        }
+
+        // GET/books/search/query
+        [HttpGet("search/{query}")]
+        public IActionResult SearchBookByTitlePart(string query)
+        {
+            var book = _bookService.SearchBookByTitlePart(query);
+
+            if (book == null)
+                return NotFound();
+            return Ok(book);
+        }
+
         // POST/books/create
         [HttpPost("create")]
-        public ActionResult Create(BookModel book)
+        public IActionResult Create(BookModel book)
         {
             _bookService.CreateBook(book);
             return Ok();
@@ -47,7 +71,7 @@ namespace Intive.Api.Controllers
 
         // PUT/books/update/id
         [HttpPut("update/{id}")]
-        public ActionResult Update(int id, BookModel book)
+        public IActionResult Update(int id, BookModel book)
         {
             var bookToUpdate = _bookService.UpdateBook(id, book);
             return Ok(bookToUpdate);
@@ -55,7 +79,7 @@ namespace Intive.Api.Controllers
 
         // DELETE/books/delete/id
         [HttpDelete("delete/{id}")]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             _bookService.DeleteBook(id);
             return Ok();

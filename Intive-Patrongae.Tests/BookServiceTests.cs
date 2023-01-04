@@ -79,52 +79,52 @@ namespace Intive.Tests
         [Test]
         public void GetAll_ReturnsAllBooks()
         {
-            {
-                //Arrange
 
-                var allBooks = new List<Book>()
+            //Arrange
+
+            var allBooks = new List<Book>()
                 {
                    new Book {Id = 1, Title = "Hobbit", Description = "Hobbit description", Rating = 9.77m, ISBN = "1234567891111" , PublicationDate = new DateTime(1937,9,21) },
                    new Book {Id = 2, Title = "Harry Potter", Description = "Harry Potter description", Rating = 9.22m, ISBN = "1111987654321" , PublicationDate = new DateTime(1997,6,26),}
                 };
 
-                _bookRepositoryMock.Setup(x => x.GetAll()).Returns(allBooks);
+            _bookRepositoryMock.Setup(x => x.GetAll()).Returns(allBooks);
 
-                //Act
+            //Act
 
-                var books = _bookService.GetAll();
+            var books = _bookService.GetAll();
 
-                //Assert
+            //Assert
 
-                Assert.AreEqual(allBooks.Count, books.Count);
-            }
+            Assert.AreEqual(allBooks.Count, books.Count);
+
         }
 
         [Test]
         public void CreateBook_ReturnsValidationErrors()
         {
+
+            //Arrange
+
+            var book = new BookModel()
             {
-                //Arrange
+                Title = "",
+                Description = "",
+                Rating = -8.2m,
+                ISBN = "1234",
+            };
 
-                var book = new BookModel()
-                {
-                    Title = "",
-                    Description = "",
-                    Rating = -8.2m,
-                    ISBN = "1234",
-                };
+            _bookRepositoryMock.Setup(x => x.Create(book)).Equals(validationResultTestBook);
 
-                _bookRepositoryMock.Setup(x => x.Create(book)).Equals(validationResultTestBook);
+            //Act
 
-                //Act
+            var bookToCreate = _bookService.CreateBook(book);
 
-                var bookToCreate = _bookService.CreateBook(book);
+            //Assert
 
-                //Assert
+            Assert.IsAssignableFrom<List<ValidationError>>(bookToCreate);
+            Assert.AreEqual(validationResultTestBook, bookToCreate);
 
-                Assert.IsAssignableFrom<List<ValidationError>>(bookToCreate);
-                Assert.AreEqual(validationResultTestBook, bookToCreate);
-            }
         }
 
         private readonly List<ValidationError> validationResultTestBook = new()
@@ -141,6 +141,8 @@ namespace Intive.Tests
         [Test]
         public void DeleteBook_ForValidId()
         {
+            //Arrange
+
             var bookId = 1;
 
             _bookRepositoryMock.Setup(x => x.Delete(bookId));
@@ -158,6 +160,8 @@ namespace Intive.Tests
         [Test]
         public void UpdateBook_ForValidId()
         {
+            //Arrange
+
             var bookId = 1;
             var bookToUpdate = new BookModel()
             {
@@ -181,7 +185,31 @@ namespace Intive.Tests
 
             _bookRepositoryMock.Verify(x => x.Update(It.IsAny<int>(), It.IsAny<Book>()));
         }
-         
+
+        [Test]
+        public void SearchBookByTitlePart_ReturnsBookWhenExists()
+        {
+            //Arrange
+
+            var searchQuery = "Harry";
+
+            var book = new Book
+            {
+                Title = "Harry Potter"
+            };
+
+            _bookRepositoryMock.Setup(x => x.SearchBookByTitlePart(searchQuery)).Returns(book);
+
+            //Act
+
+            var searchedBook = _bookService.SearchBookByTitlePart(searchQuery);
+
+            //Assert
+
+            Assert.AreEqual(book.Title, searchedBook.Title);
+
+        }
+
     }
 
 
