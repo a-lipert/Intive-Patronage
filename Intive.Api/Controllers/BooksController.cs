@@ -1,7 +1,4 @@
-﻿using Intive.Core.Database;
-using Intive.Core.Entities;
-using Intive.Core.Repository;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Intive.Business.Services;
 using Intive.Business.Models;
 
@@ -27,7 +24,7 @@ namespace Intive.Api.Controllers
         }
 
         // GET/books/id
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public IActionResult GetById(int id)
         {
             var book = _bookService.GetById(id);
@@ -45,16 +42,16 @@ namespace Intive.Api.Controllers
         {
             var book = _bookService.GetByTitle(title);
 
-            if (title == null)
+            if (book == null)
                 return NotFound();
             return Ok(book);
         }
 
         // GET/books/search/query
         [HttpGet("search/{query}")]
-        public IActionResult SearchBookByTitlePart(string query)
+        public IActionResult SearchBook(string query)
         {
-            var book = _bookService.SearchBookByTitlePart(query);
+            var book = _bookService.SearchBook(query);
 
             if (book == null)
                 return NotFound();

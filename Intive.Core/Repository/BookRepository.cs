@@ -1,6 +1,5 @@
 ﻿using Intive.Core.Database;
 using Intive.Core.Entities;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Intive.Core.Repository
 {
@@ -22,10 +21,10 @@ namespace Intive.Core.Repository
             return _appDbContext.Books.FirstOrDefault(x => x.Title == title);
         }
 
-        public Book SearchBookByTitlePart(string query)
+        public IEnumerable<Book> SearchBook(string query)
         {
-            var book = _appDbContext.Books.FirstOrDefault(x => x.Title.Contains(query));
-            return book;
+            var books = _appDbContext.Books.Where(x => x.Title.Contains(query) || x.Description.Contains(query));
+            return books;
         }
 
         public bool Update(int id, Book book)
@@ -49,16 +48,15 @@ namespace Intive.Core.Repository
         public void Delete(int id)
         {
             var bookToDelete = _appDbContext.Books.Find(id);
-            if (bookToDelete != null) 
-            _appDbContext.Books.Remove(bookToDelete);
+
+            if (bookToDelete != null) _appDbContext.Books.Remove(bookToDelete);
+
             _appDbContext.SaveChanges();
         }
 
-        public void Create<T>(T entity)
+        public void Create(Book entity)
         {
-            var book = new Book();
-
-            _appDbContext.Books.Add(book);
+            _appDbContext.Books.Add(entity);
             _appDbContext.SaveChanges();
         }
 

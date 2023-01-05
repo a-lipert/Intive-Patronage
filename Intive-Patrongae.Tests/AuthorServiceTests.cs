@@ -47,10 +47,11 @@ namespace Intive.Tests
         }
 
         [Test]
-        public void GetByName_ReturnsExceptionWhenNameNull()
+        public void GetByName_ReturnsExceptionWhenNameNullOrEmpty()
         {
             {
-                Assert.Throws<ArgumentNullException>(() => _authorService.GetByName(null));
+                Assert.Throws<ArgumentException>(() => _authorService.GetByName(null));
+                Assert.Throws<ArgumentException>(() => _authorService.GetByName(""));
             }
 
         }

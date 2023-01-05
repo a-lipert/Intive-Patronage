@@ -1,7 +1,10 @@
+using Intive.Api.Middleware;
 using Intive.Business.Services;
 using Intive.Core.Database;
 using Intive.Core.Repository;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +38,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

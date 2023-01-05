@@ -38,7 +38,7 @@ namespace Intive.Business.Services
 
         public Author? GetByName(string name)
         {
-            ArgumentNullException.ThrowIfNull(name);
+            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Argument needs a value");
             return _authorRepository.GetByName(name);
         }
 
