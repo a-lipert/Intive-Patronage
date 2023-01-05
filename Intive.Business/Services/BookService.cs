@@ -2,6 +2,7 @@
 using Intive.Business.Models;
 using Intive.Core.Entities;
 using Intive.Core.Repository;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Intive.Business.Services
 {
@@ -81,23 +82,29 @@ namespace Intive.Business.Services
 
         }
 
-        public Book? GetById(int id) =>  _bookRepository.GetById(id);
+        public Book? GetById(int id)
+        {
+            if (id < 1) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
+            return _bookRepository.GetById(id);
+        }
         public Book? GetByTitle(string title)
         {
-            ArgumentNullException.ThrowIfNull(title);
+            if (string.IsNullOrEmpty(title)) throw new ArgumentException("Argument needs a value");
             return _bookRepository.GetByTitle(title);
         }
+
         public List<Book> GetAll() => _bookRepository.GetAll();
+
         public void DeleteBook(int id)
         {
-            if(id>0)
+            if (id < 1) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
             _bookRepository.Delete(id);
         }
 
-        public Book? SearchBookByTitlePart(string query)
+        public IEnumerable<Book> SearchBook(string query)
         {
-            ArgumentNullException.ThrowIfNull(query);
-            return _bookRepository.SearchBookByTitlePart(query);
+            if (string.IsNullOrEmpty(query)) throw new ArgumentException("Argument needs a value");
+            return _bookRepository.SearchBook(query);
         }
     }
 } 

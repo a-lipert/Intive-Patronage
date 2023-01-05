@@ -23,7 +23,7 @@ namespace Intive.Core.Database
                 .WithMany(ba => ba.BookAuthors)
                 .HasForeignKey(a => a.AuthorId);
 
-            //value converter
+            //gender value converter
              
             var converter = new ValueConverter<Gender, bool>(
             g => g == Gender.Male ? false : true,

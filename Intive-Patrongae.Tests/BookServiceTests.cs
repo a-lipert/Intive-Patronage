@@ -44,7 +44,7 @@ namespace Intive.Tests
         }
 
         [Test]
-        public void GetByTitle_ReturnsBookWhenNameExists()
+        public void GetByTitle_ReturnsBookWhenExists()
         {
             //Arrange
 
@@ -69,10 +69,11 @@ namespace Intive.Tests
         }
 
         [Test]
-        public void GetByName_ReturnsExceptionWhenTitleNull()
+        public void GetByTitle_ReturnsExceptionWhenTitleNullOrEmpty()
         {
             {
-                Assert.Throws<ArgumentNullException>(() => _bookService.GetByTitle(null));
+                Assert.Throws<ArgumentException>(() => _bookService.GetByTitle(null));
+                Assert.Throws<ArgumentException>(() => _bookService.GetByTitle(""));
             }
         }
 
@@ -187,27 +188,31 @@ namespace Intive.Tests
         }
 
         [Test]
-        public void SearchBookByTitlePart_ReturnsBookWhenExists()
+        public void SearchBook_ReturnsBooksWhenContainQuery()
         {
             //Arrange
 
-            var searchQuery = "Harry";
-
+            var searchQuery = "Test";
             var book = new Book
             {
-                Title = "Harry Potter"
+                Title = "Test book"
+            };
+            var anotherBook = new Book
+            {
+                Description = "Test test"
             };
 
-            _bookRepositoryMock.Setup(x => x.SearchBookByTitlePart(searchQuery)).Returns(book);
+            var booksList = new List<Book> { anotherBook };   
+
+            _bookRepositoryMock.Setup(x => x.SearchBook(searchQuery)).Returns(booksList);
 
             //Act
 
-            var searchedBook = _bookService.SearchBookByTitlePart(searchQuery);
+            var searchedBookList = _bookService.SearchBook(searchQuery);
 
             //Assert
 
-            Assert.AreEqual(book.Title, searchedBook.Title);
-
+            Assert.AreEqual(booksList, searchedBookList);
         }
 
     }
