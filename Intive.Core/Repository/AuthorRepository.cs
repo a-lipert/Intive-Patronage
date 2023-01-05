@@ -12,10 +12,9 @@ namespace Intive.Core.Repository
             _appDbContext = appDbContext;
         }
        
-
         public Author? GetByName(string name)
         {
-            return _appDbContext.Authors.FirstOrDefault(x => x.LastName == name);
+            return _appDbContext.Authors.FirstOrDefault(x => x.LastName == name || x.FirstName == name);
         }
 
         public List<Author> GetAll()
@@ -24,13 +23,10 @@ namespace Intive.Core.Repository
         }
 
 
-        public void Create<T>(T entity)
-        {
-            var author = new Author();
-           
-            _appDbContext.Authors.Add(author);
-            _appDbContext.SaveChanges();
-            
+        public void Create(Author entity)
+        {            
+            _appDbContext.Authors.Add(entity);
+            _appDbContext.SaveChanges();            
         }
 
        

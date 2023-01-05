@@ -2,7 +2,7 @@
 {
     public interface IBaseRepository<T> where T : class
     {
-        void Create<T>(T entity);
+        void Create(T entity);
         List<T> GetAll();
     }
 }
