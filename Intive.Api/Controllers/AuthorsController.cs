@@ -1,7 +1,5 @@
 ﻿using Intive.Business.Models;
 using Intive.Business.Services;
-using Intive.Core.Entities;
-using Intive.Core.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Intive.Api.Controllers
