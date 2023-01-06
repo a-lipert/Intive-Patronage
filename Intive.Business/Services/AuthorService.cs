@@ -18,28 +18,29 @@ namespace Intive.Business.Services
             var validationResult = IsValid(author);
 
             if (validationResult.Any()) return validationResult;
-            else
-            {
-                var authorToCreate = new Author()
-                {
-                    FirstName = author.FirstName,
-                    LastName = author.LastName,
-                    BirthDate = author.BirthDate,
-                    Gender = author.Gender,
-                };
 
+            else 
+            {
+                var authorToCreate = author.ToAuthorEntity();
                 _authorRepository.Create(authorToCreate);
             }
 
             return validationResult;
         }
 
-        public List<Author> GetAll() => _authorRepository.GetAll();
+        public List<AuthorModel> GetAll()
+        {
+            var authors = _authorRepository.GetAll();
+            
+            return authors.Select(x => x.ToAuthorModel()).ToList();
+        }
 
-        public Author? GetByName(string name)
+        public AuthorModel GetByName(string name)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentException("Argument needs a value");
-            return _authorRepository.GetByName(name);
+            var author = _authorRepository.GetByName(name);
+            if (author == null) throw new ArgumentNullException("name");
+            return author.ToAuthorModel();
         }
 
         private static List<ValidationError> IsValid(AuthorModel author)
@@ -56,8 +57,13 @@ namespace Intive.Business.Services
                 validationResults.Add(new ValidationError(ValidationConstants.IsTooLong, nameof(author.LastName)));
             if (author.BirthDate.Equals(DateTime.MinValue))
                 validationResults.Add(new ValidationError(ValidationConstants.FieldIsRequired, nameof(author.BirthDate)));
-            
+
             return validationResults;
         }
+
+        
+
+      
+
     }
 }

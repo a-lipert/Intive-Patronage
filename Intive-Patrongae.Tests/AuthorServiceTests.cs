@@ -91,8 +91,8 @@ namespace Intive.Tests
                     FirstName = "CharlesCharlesCharlesCharlesCharlesCharlesCharlesCharles",
                     LastName = "DickensDickensDickensDickensDickensDickensDickensDickens",
                 };
-
-                _authorRepositoryMock.Setup(x => x.Create(author)).Equals(validationResultTest);
+                var authorToDb = author.ToAuthorEntity();
+                _authorRepositoryMock.Setup(x => x.Create(authorToDb)).Equals(validationResultTest);
 
                 //Act
 

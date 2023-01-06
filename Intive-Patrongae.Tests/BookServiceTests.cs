@@ -13,9 +13,10 @@ namespace Intive.Tests
     {
         private readonly BookService _bookService;
         private readonly Mock<IBookRepository> _bookRepositoryMock = new();
+        private readonly Mock<IAuthorRepository> _authorRepositoryMock = new();
         public BookServiceTests()
         {
-            _bookService = new BookService(_bookRepositoryMock.Object);
+            _bookService = new BookService(_bookRepositoryMock.Object, _authorRepositoryMock.Object);
         }
 
         [Test]
@@ -27,20 +28,20 @@ namespace Intive.Tests
 
             var bookTest = new Book
             {
-                Id = bookId
+                Id = bookId,
+                Title = "BookTest"
             };
-
 
             _bookRepositoryMock.Setup(x => x.GetById(bookId)).Returns(bookTest);
 
             //Act
 
             var book = _bookService.GetById(bookId);
-
+            var bookFromDb = book.ToBookEntity();
 
             //Assert
 
-            Assert.AreEqual(bookId, book.Id);
+            Assert.AreEqual(bookTest.Title, bookFromDb.Title);
         }
 
         [Test]
@@ -115,7 +116,9 @@ namespace Intive.Tests
                 ISBN = "1234",
             };
 
-            _bookRepositoryMock.Setup(x => x.Create(book)).Equals(validationResultTestBook);
+            var bookToDb = book.ToBookEntity();
+
+            _bookRepositoryMock.Setup(x => x.Create(bookToDb)).Equals(validationResultTestBook);
 
             //Act
 
@@ -193,26 +196,29 @@ namespace Intive.Tests
             //Arrange
 
             var searchQuery = "Test";
+
             var book = new Book
             {
-                Title = "Test book"
+                Title = "BookTest"
             };
             var anotherBook = new Book
             {
                 Description = "Test test"
             };
 
-            var booksList = new List<Book> { anotherBook };   
+            var booksList = new List<Book> { book, anotherBook };   
 
             _bookRepositoryMock.Setup(x => x.SearchBook(searchQuery)).Returns(booksList);
 
             //Act
 
-            var searchedBookList = _bookService.SearchBook(searchQuery);
+            var searchedBooks = _bookService.SearchBook(searchQuery);
+            var searchedBooksToEntity = searchedBooks.Select(x => x.ToBookEntity()).ToList();
 
             //Assert
 
-            Assert.AreEqual(booksList, searchedBookList);
+            Assert.AreEqual(2, searchedBooksToEntity.Count);    
+            CollectionAssert.AreEquivalent(booksList, searchedBooksToEntity);
         }
 
     }

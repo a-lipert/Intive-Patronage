@@ -20,6 +20,11 @@ namespace Intive.Business.Models
 
         [Required]
         public DateTime PublicationDate { get; set; }
+
+        [Required]
+        public int AuthorId { get; set; }
+
+        public string AuthorName { get; internal set; }
       
     }
 }

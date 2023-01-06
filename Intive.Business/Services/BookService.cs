@@ -1,36 +1,33 @@
 ﻿using Intive.Business.Helpers;
 using Intive.Business.Models;
-using Intive.Core.Entities;
 using Intive.Core.Repository;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Intive.Business.Services
 {
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
-        public BookService(IBookRepository bookRepository)
+        private readonly IAuthorRepository _authorRepository;
+        public BookService(IBookRepository bookRepository, IAuthorRepository authorRepository)
         {
             _bookRepository = bookRepository;
+            _authorRepository = authorRepository;
         }
 
         public List<ValidationError> CreateBook(BookModel book)
-        {
+        {            
             var validationResult = IsValid(book);
             if (validationResult.Any()) return validationResult;
             else
             {
-                var bookToCreate = new Book()
+                var bookToCreate = book.ToBookEntity();
+
+                if (_authorRepository.Exists(book.AuthorId))
                 {
-                    Title = book.Title,
-                    Description = book.Description,
-                    Rating = book.Rating,
-                    ISBN = book.ISBN,
-                    PublicationDate = book.PublicationDate,
-                };
+                    bookToCreate.BookAuthors.Add(new Core.Entities.BookAuthor { AuthorId = book.AuthorId });
+                }
 
                 _bookRepository.Create(bookToCreate);
-
             }
             return validationResult;
         }
@@ -42,22 +39,14 @@ namespace Intive.Business.Services
             if (validationResult.Any()) return validationResult;
             else if (id>0)
             {
-                var bookToUpdate = new Book()
-                {
-                    Title = book.Title,
-                    Description = book.Description,
-                    Rating = book.Rating,
-                    ISBN = book.ISBN,
-                    PublicationDate = book.PublicationDate,
-                };
-
+                var bookToUpdate = book.ToBookEntity();
                 _bookRepository.Update(id, bookToUpdate);
             }
             return validationResult;
 
         }
 
-        private static List<ValidationError> IsValid(BookModel book)
+        private List<ValidationError> IsValid(BookModel book)
         {
             var validationResults = new List<ValidationError>();
 
@@ -82,18 +71,25 @@ namespace Intive.Business.Services
 
         }
 
-        public Book? GetById(int id)
+        public BookModel GetById(int id)
         {
             if (id < 1) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
-            return _bookRepository.GetById(id);
+            var book = _bookRepository.GetById(id);
+            return book.ToBookModel();
         }
-        public Book? GetByTitle(string title)
+        public BookModel GetByTitle(string title)
         {
             if (string.IsNullOrEmpty(title)) throw new ArgumentException("Argument needs a value");
-            return _bookRepository.GetByTitle(title);
+            var book = _bookRepository.GetByTitle(title);
+            if (book == null) throw new ArgumentNullException("title");
+            return book.ToBookModel();
         }
 
-        public List<Book> GetAll() => _bookRepository.GetAll();
+        public List<BookModel> GetAll()
+        {
+            var books = _bookRepository.GetAll();
+            return books.Select(x => x.ToBookModel()).ToList();
+        }
 
         public void DeleteBook(int id)
         {
@@ -101,10 +97,11 @@ namespace Intive.Business.Services
             _bookRepository.Delete(id);
         }
 
-        public IEnumerable<Book> SearchBook(string query)
+        public IEnumerable<BookModel> SearchBook(string query)
         {
             if (string.IsNullOrEmpty(query)) throw new ArgumentException("Argument needs a value");
-            return _bookRepository.SearchBook(query);
+            var books = _bookRepository.SearchBook(query);
+            return books.Select(x => x.ToBookModel()).ToList();
         }
     }
 } 
