@@ -1,31 +1,30 @@
 ﻿using Intive.Business.Models;
 using Intive.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intive.Business.Helpers
 {
     public static class AuthorMapper
     {
-        public static Author ToAuthorEntity(this AuthorModel model)
+        public static Author ToAuthorEntity(this AuthorModel author)
         {
+            if(author is null) return null; 
             return new Author
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                BirthDate = model.BirthDate,
-                Gender = model.Gender,
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                BirthDate = author.BirthDate,
+                Gender = author.Gender,
             };
 
         }
 
         public static AuthorModel ToAuthorModel(this Author author)
         {
+            if(author is null) return null;
+
             return new AuthorModel
             {
+                Id = author.Id,
                 FirstName = author.FirstName,
                 LastName = author.LastName,
                 BirthDate = author.BirthDate,

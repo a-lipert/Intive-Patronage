@@ -1,24 +1,21 @@
 ﻿using Intive.Business.Models;
 using Intive.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intive.Business.Helpers
 {
     public static class BookMapper
     {
-        public static Book ToBookEntity(this BookModel model)
+        public static Book ToBookEntity(this BookModel book)
         {
+            if (book is null) return null;
+
             return new Book
             {
-                Title = model.Title,
-                Description = model.Description,
-                Rating = model.Rating,
-                ISBN = model.ISBN,
-                PublicationDate = model.PublicationDate,
+                Title = book.Title,
+                Description = book.Description,
+                Rating = book.Rating,
+                ISBN = book.ISBN,
+                PublicationDate = book.PublicationDate,
                 BookAuthors = new List<BookAuthor>()
             };
 
@@ -26,6 +23,8 @@ namespace Intive.Business.Helpers
 
         public static BookModel ToBookModel(this Book book)
         {
+            if (book is null) return null;
+
             return new BookModel
             {
                 Title = book.Title,
@@ -33,6 +32,8 @@ namespace Intive.Business.Helpers
                 Rating = book.Rating,
                 ISBN = book.ISBN,
                 PublicationDate = book.PublicationDate,
+                AuthorId = book.BookAuthors?.FirstOrDefault()?.AuthorId ?? -1,
+                AuthorName = book.BookAuthors?.FirstOrDefault()?.Author?.FullName
             };
         }
     }

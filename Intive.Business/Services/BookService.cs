@@ -81,7 +81,7 @@ namespace Intive.Business.Services
         {
             if (string.IsNullOrEmpty(title)) throw new ArgumentException("Argument needs a value");
             var book = _bookRepository.GetByTitle(title);
-            if (book == null) throw new ArgumentNullException("title");
+            if (book == null) return null;
             return book.ToBookModel();
         }
 

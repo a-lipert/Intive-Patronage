@@ -1,5 +1,6 @@
 ﻿using Intive.Core.Database;
 using Intive.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Intive.Core.Repository
 {
@@ -13,17 +14,26 @@ namespace Intive.Core.Repository
 
         public Book GetById(int id)
         {
-            return _appDbContext.Books.Find(id);
+            return _appDbContext.Books
+                .Include(x => x.BookAuthors)
+                .ThenInclude(x => x.Author)
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public Book GetByTitle(string title)
         {
-            return _appDbContext.Books.FirstOrDefault(x => x.Title == title);
+            return _appDbContext.Books
+                .Include(x => x.BookAuthors)
+                .ThenInclude(x => x.Author)
+                .FirstOrDefault(x => x.Title == title);
         }
 
         public IEnumerable<Book> SearchBook(string query)
         {
-            var books = _appDbContext.Books.Where(x => x.Title.Contains(query) || x.Description.Contains(query));
+            var books = _appDbContext.Books
+                .Include(x => x.BookAuthors)
+                .ThenInclude(x => x.Author)
+                .Where(x => x.Title.Contains(query) || x.Description.Contains(query));
             return books;
         }
 
@@ -62,7 +72,11 @@ namespace Intive.Core.Repository
 
         public List<Book> GetAll()
         {
-            return _appDbContext.Books.OrderBy(x => x.Title).ToList();
+            return _appDbContext.Books
+                .Include(x => x.BookAuthors)
+                .ThenInclude(x => x.Author)
+                .OrderBy(x => x.Title)
+                .ToList();
         }
     }
 }

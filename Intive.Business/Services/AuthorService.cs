@@ -39,7 +39,7 @@ namespace Intive.Business.Services
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentException("Argument needs a value");
             var author = _authorRepository.GetByName(name);
-            if (author == null) throw new ArgumentNullException("name");
+            if (author == null) return null;
             return author.ToAuthorModel();
         }
 
