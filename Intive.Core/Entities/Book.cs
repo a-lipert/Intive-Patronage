@@ -17,5 +17,19 @@ namespace Intive.Core.Entities
         public DateTime PublicationDate { get; set; }
         public List<BookAuthor> BookAuthors { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if(obj is Book book)
+            {
+                return Title == book.Title
+                    && Description == book.Description
+                    && Rating == book.Rating
+                    && ISBN == book.ISBN
+                    && PublicationDate == book.PublicationDate;
+            }
+
+            return false;
+        }
+
     }
 }

@@ -5,6 +5,8 @@ namespace Intive.Business.Models
 {
     public class AuthorModel
     {
+        public int Id { get; internal set; }
+
         [Required]
         [StringLength(50)]
         public string FirstName { get; set; }

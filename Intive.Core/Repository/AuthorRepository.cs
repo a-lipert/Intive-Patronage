@@ -12,7 +12,7 @@ namespace Intive.Core.Repository
             _appDbContext = appDbContext;
         }
        
-        public Author? GetByName(string name)
+        public Author GetByName(string name)
         {
             return _appDbContext.Authors.FirstOrDefault(x => x.LastName == name || x.FirstName == name);
         }
@@ -29,6 +29,11 @@ namespace Intive.Core.Repository
             _appDbContext.SaveChanges();            
         }
 
+
+        public bool Exists(int id)
+        {
+            return _appDbContext.Authors.Any(x => x.Id == id);
+        }
        
     }
 
