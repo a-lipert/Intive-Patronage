@@ -5,7 +5,7 @@ namespace Intive.Core.Entities.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Gender
     {
-        Male,
-        Female
+        Male = 0,
+        Female = 1,
     }
 }
