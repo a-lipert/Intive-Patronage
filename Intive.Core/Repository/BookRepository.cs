@@ -1,6 +1,7 @@
 ﻿using Intive.Core.Database;
 using Intive.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Intive.Core.Repository
 {
@@ -33,7 +34,8 @@ namespace Intive.Core.Repository
             var books = _appDbContext.Books
                 .Include(x => x.BookAuthors)
                 .ThenInclude(x => x.Author)
-                .Where(x => x.Title.Contains(query) || x.Description.Contains(query));
+                .Where(x => x.Title.Contains(query) || x.Description.Contains(query) || x.Rating.ToString() == query || x.PublicationDate.ToString() == query);
+
             return books;
         }
 
