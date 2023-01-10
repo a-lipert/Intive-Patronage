@@ -6,6 +6,7 @@ using Intive.Core.Repository;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using static Intive.Business.Services.AuthorService;
 
 namespace Intive.Tests
 {
@@ -73,8 +74,8 @@ namespace Intive.Tests
         public void GetByTitle_ReturnsExceptionWhenTitleNullOrEmpty()
         {
             {
-                Assert.Throws<ArgumentException>(() => _bookService.GetByTitle(null));
-                Assert.Throws<ArgumentException>(() => _bookService.GetByTitle(""));
+                Assert.Throws<ArgumentNullOrEmptyException>(() => _bookService.GetByTitle(null));
+                Assert.Throws<ArgumentNullOrEmptyException>(() => _bookService.GetByTitle(""));
             }
         }
 
