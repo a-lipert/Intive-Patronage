@@ -12,7 +12,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Api", "Intive.Api\In
 		{B3A33EC2-3253-4FF1-A177-3D362E2CCD77} = {B3A33EC2-3253-4FF1-A177-3D362E2CCD77}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intive.Tests", "Intive-Patrongae.Tests\Intive.Tests.csproj", "{08FA559D-4D2D-486D-B68C-9A863C6BAD51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Tests", "Intive-Patrongae.Tests\Intive.Tests.csproj", "{08FA559D-4D2D-486D-B68C-9A863C6BAD51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B3BE72CD-AF14-4155-97E5-ED769D7F8C2D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4533DC0A-B31F-4197-AFE7-FA39001B5ACB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B3A33EC2-3253-4FF1-A177-3D362E2CCD77} = {4533DC0A-B31F-4197-AFE7-FA39001B5ACB}
+		{62E0F00C-B1EB-4F78-99A8-E3F10AA7782C} = {4533DC0A-B31F-4197-AFE7-FA39001B5ACB}
+		{A6E36BD6-4907-4A03-907A-E1E9457A7BE1} = {4533DC0A-B31F-4197-AFE7-FA39001B5ACB}
+		{08FA559D-4D2D-486D-B68C-9A863C6BAD51} = {B3BE72CD-AF14-4155-97E5-ED769D7F8C2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8553263C-88A7-4F2B-B7DE-92367FA01D29}
