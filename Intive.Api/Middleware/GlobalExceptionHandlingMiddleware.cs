@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using static Intive.Business.Services.AuthorService;
 
 namespace Intive.Api.Middleware
 {
@@ -20,7 +21,7 @@ namespace Intive.Api.Middleware
             }
             catch (Exception ex)
             {
-                if (ex is ArgumentException) throw;
+                if (ex is ArgumentNullOrEmptyException) throw;
 
                 await HandleExceptionAsync(context, ex);
             }
