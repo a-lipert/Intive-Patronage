@@ -1,6 +1,7 @@
 ﻿using Intive.Business.Helpers;
 using Intive.Business.Models;
 using Intive.Core.Repository;
+using static Intive.Business.Services.AuthorService;
 
 namespace Intive.Business.Services
 {
@@ -17,8 +18,7 @@ namespace Intive.Business.Services
         public List<ValidationError> CreateBook(BookModel book)
         {            
             var validationResult = IsValid(book);
-            if (validationResult.Any()) return validationResult;
-            else
+            if (!validationResult.Any())
             {
                 var bookToCreate = book.ToBookEntity();
 
@@ -29,6 +29,7 @@ namespace Intive.Business.Services
 
                 _bookRepository.Create(bookToCreate);
             }
+
             return validationResult;
         }
 
@@ -36,14 +37,13 @@ namespace Intive.Business.Services
         public List<ValidationError> UpdateBook(int id, BookModel book)
         {
             var validationResult = IsValid(book);
-            if (validationResult.Any()) return validationResult;
-            else if (id>0)
+            if (!validationResult.Any() && id > 0)
             {
                 var bookToUpdate = book.ToBookEntity();
                 _bookRepository.Update(id, bookToUpdate);
             }
-            return validationResult;
 
+            return validationResult;
         }
 
         private List<ValidationError> IsValid(BookModel book)
@@ -73,15 +73,27 @@ namespace Intive.Business.Services
 
         public BookModel GetById(int id)
         {
-            if (id < 1) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
+            if (id < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
+            }
+
             var book = _bookRepository.GetById(id);
             return book.ToBookModel();
         }
         public BookModel GetByTitle(string title)
         {
-            if (string.IsNullOrEmpty(title)) throw new ArgumentException("Argument needs a value");
+            if (string.IsNullOrEmpty(title))
+            {
+                throw new ArgumentNullOrEmptyException("title");
+            }
+
             var book = _bookRepository.GetByTitle(title);
-            if (book == null) return null;
+            if (book == null)
+            {
+                return null;
+            }
+
             return book.ToBookModel();
         }
 
@@ -93,13 +105,21 @@ namespace Intive.Business.Services
 
         public void DeleteBook(int id)
         {
-            if (id < 1) throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
+            if (id < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
+            }
+
             _bookRepository.Delete(id);
         }
 
         public IEnumerable<BookModel> SearchBook(string query)
         {
-            if (string.IsNullOrEmpty(query)) throw new ArgumentException("Argument needs a value");
+            if (string.IsNullOrEmpty(query))
+            {
+                throw new ArgumentNullOrEmptyException("query");
+            }
+
             var books = _bookRepository.SearchBook(query);
             return books.Select(x => x.ToBookModel()).ToList();
         }

@@ -1,6 +1,5 @@
 ﻿using Intive.Business.Helpers;
 using Intive.Business.Models;
-using Intive.Core.Entities;
 using Intive.Core.Repository;
 
 namespace Intive.Business.Services
@@ -17,7 +16,10 @@ namespace Intive.Business.Services
         {
             var validationResult = IsValid(author);
 
-            if (validationResult.Any()) return validationResult;
+            if (validationResult.Any())
+            {
+                return validationResult;
+            }
 
             else 
             {
@@ -37,9 +39,14 @@ namespace Intive.Business.Services
 
         public AuthorModel GetByName(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Argument needs a value");
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullOrEmptyException("name");
+            }
+
             var author = _authorRepository.GetByName(name);
             if (author == null) return null;
+
             return author.ToAuthorModel();
         }
 
@@ -61,9 +68,12 @@ namespace Intive.Business.Services
             return validationResults;
         }
 
-        
+        public class ArgumentNullOrEmptyException : Exception
+        {
+            public ArgumentNullOrEmptyException(string propertyName) : base($"Property {propertyName} cannot by null or empty.") { }
+        }
 
-      
+
 
     }
 }
