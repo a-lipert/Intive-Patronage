@@ -16,6 +16,10 @@ namespace Intive.Api.Controllers
         }
 
         // GET/books
+        /// <summary>
+        /// Retrieve all books
+        /// </summary>
+        /// <returns>All books</returns>
         [HttpGet]
         public IActionResult GetAllBooks()
         {
@@ -24,6 +28,11 @@ namespace Intive.Api.Controllers
         }
 
         // GET/books/id
+        /// <summary>
+        /// Get a book by id
+        /// </summary>
+        /// <param name="id">Id of the searched book</param>
+        /// <returns>Searched book</returns>
         [HttpGet("id/{id}")]
         public IActionResult GetById(int id)
         {
@@ -37,6 +46,11 @@ namespace Intive.Api.Controllers
         
 
         // GET/books/title
+        /// <summary>
+        /// Get a book by title
+        /// </summary>
+        /// <param name="title">Title of the searched book</param>
+        /// <returns>Searched book</returns>
         [HttpGet("{title}")]
         public IActionResult GetByTitle(string title)
         {
@@ -48,6 +62,11 @@ namespace Intive.Api.Controllers
         }
 
         // GET/books/search/query
+        /// <summary>
+        /// Searching books by query
+        /// </summary>
+        /// <param name="query">Searching query</param>
+        /// <returns>Books containing searching query</returns>
         [HttpGet("search/{query}")]
         public IActionResult SearchBook(string query)
         {
@@ -59,6 +78,11 @@ namespace Intive.Api.Controllers
         }
 
         // POST/books/create
+        /// <summary>
+        /// Create a book
+        /// </summary>
+        /// <param name="book">Parameters of a new book</param>
+        /// <returns></returns>
         [HttpPost("create")]
         public IActionResult Create(BookModel book)
         {
@@ -67,6 +91,12 @@ namespace Intive.Api.Controllers
         }
 
         // PUT/books/update/id
+        /// <summary>
+        /// Update a book by id
+        /// </summary>
+        /// <param name="id">Id of a book to update</param>
+        /// <param name="book">Book parameters to update</param>
+        /// <returns></returns>
         [HttpPut("update/{id}")]
         public IActionResult Update(int id, BookModel book)
         {
@@ -75,6 +105,11 @@ namespace Intive.Api.Controllers
         }
 
         // DELETE/books/delete/id
+        /// <summary>
+        /// Delete a book by id
+        /// </summary>
+        /// <param name="id">Id of a book to delete</param>
+        /// <returns></returns>
         [HttpDelete("delete/{id}")]
         public IActionResult Delete(int id)
         {
