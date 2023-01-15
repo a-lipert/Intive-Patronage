@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Intive.Business\Intive.Business.csproj" />
-    <ProjectReference Include="..\Intive.Core\Intive.Core.csproj" />
+    <ProjectReference Include="..\..\src\Intive.Business\Intive.Business.csproj" />
+    <ProjectReference Include="..\..\src\Intive.Core\Intive.Core.csproj" />
   </ItemGroup>
 
 </Project>

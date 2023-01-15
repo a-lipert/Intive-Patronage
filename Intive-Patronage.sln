@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Core", "Intive.Core\Intive.Core.csproj", "{B3A33EC2-3253-4FF1-A177-3D362E2CCD77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Core", "src\Intive.Core\Intive.Core.csproj", "{B3A33EC2-3253-4FF1-A177-3D362E2CCD77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Business", "Intive.Business\Intive.Business.csproj", "{62E0F00C-B1EB-4F78-99A8-E3F10AA7782C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Business", "src\Intive.Business\Intive.Business.csproj", "{62E0F00C-B1EB-4F78-99A8-E3F10AA7782C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Api", "Intive.Api\Intive.Api.csproj", "{A6E36BD6-4907-4A03-907A-E1E9457A7BE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Api", "src\Intive.Api\Intive.Api.csproj", "{A6E36BD6-4907-4A03-907A-E1E9457A7BE1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B3A33EC2-3253-4FF1-A177-3D362E2CCD77} = {B3A33EC2-3253-4FF1-A177-3D362E2CCD77}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Tests", "Intive-Patrongae.Tests\Intive.Tests.csproj", "{08FA559D-4D2D-486D-B68C-9A863C6BAD51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intive.Tests", "Tests\Intive-Patrongae.Tests\Intive.Tests.csproj", "{08FA559D-4D2D-486D-B68C-9A863C6BAD51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B3BE72CD-AF14-4155-97E5-ED769D7F8C2D}"
 EndProject
