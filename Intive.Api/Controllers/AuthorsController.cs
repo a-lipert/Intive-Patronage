@@ -17,7 +17,7 @@ namespace Intive.Api.Controllers
 
         // GET/authors
         /// <summary>
-        /// Retrieve all author
+        /// Retrieves all author
         /// </summary>
         /// <returns>All authors</returns>
         [HttpGet]
@@ -29,7 +29,7 @@ namespace Intive.Api.Controllers
 
         // POST/authors/create
         /// <summary>
-        /// Create an author
+        /// Creates an author
         /// </summary>
         /// <param name="author">Parameters of a new author</param>
         /// <returns></returns>
@@ -43,9 +43,9 @@ namespace Intive.Api.Controllers
 
         // GET/authors/name
         /// <summary>
-        /// Get an author by name.
+        /// Gets an author by first or last name
         /// </summary>
-        /// <param name="name">Name of the searched author</param>
+        /// <param name="name">First or Last Name of the searched author</param>
         /// <returns>Searched author</returns>
         [HttpGet("{name}")]
         public IActionResult GetByName(string name)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Intive.Business.Services;
 using Intive.Business.Models;
+using Intive.Core.Enums;
 
 namespace Intive.Api.Controllers
 {
@@ -17,7 +18,7 @@ namespace Intive.Api.Controllers
 
         // GET/books
         /// <summary>
-        /// Retrieve all books
+        /// Retrieves all books
         /// </summary>
         /// <returns>All books</returns>
         [HttpGet]
@@ -29,7 +30,7 @@ namespace Intive.Api.Controllers
 
         // GET/books/id
         /// <summary>
-        /// Get a book by id
+        /// Gets a book by id
         /// </summary>
         /// <param name="id">Id of the searched book</param>
         /// <returns>Searched book</returns>
@@ -47,9 +48,9 @@ namespace Intive.Api.Controllers
 
         // GET/books/title
         /// <summary>
-        /// Get a book by title
+        /// Gets a book by title
         /// </summary>
-        /// <param name="title">Title of the searched book</param>
+        /// <param name="title">Searched book title</param>
         /// <returns>Searched book</returns>
         [HttpGet("{title}")]
         public IActionResult GetByTitle(string title)
@@ -66,12 +67,12 @@ namespace Intive.Api.Controllers
         /// Searching books by query
         /// </summary>
         /// <param name="query">Searching query</param>
+        /// <param name="orderBy">Order type</param>
         /// <returns>Books containing searching query</returns>
         [HttpGet("search/{query}")]
-        public IActionResult SearchBook(string query)
+        public IActionResult SearchBook(string query, BookOrderBy orderBy)
         {
             var book = _bookService.SearchBook(query);
-
             if (book == null)
                 return NotFound();
             return Ok(book);
@@ -79,7 +80,7 @@ namespace Intive.Api.Controllers
 
         // POST/books/create
         /// <summary>
-        /// Create a book
+        /// Creates a book
         /// </summary>
         /// <param name="book">Parameters of a new book</param>
         /// <returns></returns>
@@ -92,7 +93,7 @@ namespace Intive.Api.Controllers
 
         // PUT/books/update/id
         /// <summary>
-        /// Update a book by id
+        /// Updates a book by id
         /// </summary>
         /// <param name="id">Id of a book to update</param>
         /// <param name="book">Book parameters to update</param>
@@ -106,7 +107,7 @@ namespace Intive.Api.Controllers
 
         // DELETE/books/delete/id
         /// <summary>
-        /// Delete a book by id
+        /// Deletes a book by id
         /// </summary>
         /// <param name="id">Id of a book to delete</param>
         /// <returns></returns>
@@ -116,7 +117,7 @@ namespace Intive.Api.Controllers
             _bookService.DeleteBook(id);
             return Ok();
         }
-
-
     }
 }
+
+
