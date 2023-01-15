@@ -2,9 +2,7 @@ using Intive.Api.Middleware;
 using Intive.Business.Services;
 using Intive.Core.Database;
 using Intive.Core.Repository;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +22,7 @@ builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(op => op.IncludeXmlComments("bin\\ApiDoc.xml"));
 
 var app = builder.Build();
 

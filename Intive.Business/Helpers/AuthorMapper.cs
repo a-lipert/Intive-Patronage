@@ -8,6 +8,7 @@ namespace Intive.Business.Helpers
         public static Author ToAuthorEntity(this AuthorModel author)
         {
             if(author is null) return null; 
+
             return new Author
             {
                 FirstName = author.FirstName,
@@ -15,7 +16,6 @@ namespace Intive.Business.Helpers
                 BirthDate = author.BirthDate,
                 Gender = author.Gender,
             };
-
         }
 
         public static AuthorModel ToAuthorModel(this Author author)

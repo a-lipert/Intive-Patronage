@@ -8,8 +8,8 @@ namespace Intive.Business.Helpers
 {
     public static class ValidationConstants
     {
-        public static string FieldIsRequired => "Field is required.";
-        public static string IsTooLong => "Field is too long";      
+        public const string FieldIsRequired = "Field is required.";
+        public const string IsTooLong = "Field is too long";      
 
     }
 }

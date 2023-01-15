@@ -73,8 +73,8 @@ namespace Intive.Tests
         public void GetByTitle_ReturnsExceptionWhenTitleNullOrEmpty()
         {
             {
-                Assert.Throws<ArgumentException>(() => _bookService.GetByTitle(null));
-                Assert.Throws<ArgumentException>(() => _bookService.GetByTitle(""));
+                Assert.Throws<ArgumentNullOrEmptyException>(() => _bookService.GetByTitle(null));
+                Assert.Throws<ArgumentNullOrEmptyException>(() => _bookService.GetByTitle(""));
             }
         }
 
@@ -138,7 +138,6 @@ namespace Intive.Tests
                 new ValidationError("Rating must be greater than 0", "Rating"),
                 new ValidationError("ISBN number must be 13 digits long", "ISBN"),
                 new ValidationError(ValidationConstants.FieldIsRequired, "PublicationDate"),
-
             };
 
 
@@ -147,9 +146,10 @@ namespace Intive.Tests
         {
             //Arrange
 
-            var bookId = 1;
+            var bookId = 2;
 
             _bookRepositoryMock.Setup(x => x.Delete(bookId));
+            _bookRepositoryMock.Setup(x => x.BookExists(bookId)).Returns(true);
 
             //Act
 
@@ -162,11 +162,26 @@ namespace Intive.Tests
         }
 
         [Test]
+        public void DeleteBook_ForInvalidId_ThrowsException()
+        {
+            //Arrange
+
+            var bookId = 10;
+
+            _bookRepositoryMock.Setup(x => x.Delete(bookId));
+            _bookRepositoryMock.Setup(x => x.BookExists(bookId)).Returns(false);
+
+            //Assert
+            Assert.Throws<ArgumentNullOrEmptyException>(() => _bookService.DeleteBook(bookId));
+        }
+
+
+        [Test]
         public void UpdateBook_ForValidId()
         {
             //Arrange
 
-            var bookId = 1;
+            var bookId = 2;
             var bookToUpdate = new BookModel()
             {
                 Title = "Title",
@@ -180,6 +195,8 @@ namespace Intive.Tests
             _bookRepositoryMock.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<Book>()))
                    .Returns(true);
 
+            _bookRepositoryMock.Setup(x => x.BookExists(bookId)).Returns(true);
+
             //Act
 
             _bookService.UpdateBook(bookId, bookToUpdate);
@@ -188,6 +205,35 @@ namespace Intive.Tests
             //Assert
 
             _bookRepositoryMock.Verify(x => x.Update(It.IsAny<int>(), It.IsAny<Book>()));
+        }
+
+        [Test]
+        public void UpdateBook_ForInvalidId()
+        {
+            //Arrange
+
+            var bookId = 2;
+            var bookToUpdate = new BookModel()
+            {
+                Title = "Title",
+                Description = "Description",
+                Rating = 4.5m,
+                ISBN = "1234567891234",
+                PublicationDate = new DateTime(2022, 1, 1)
+            };
+
+
+            _bookRepositoryMock.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<Book>()))
+                   .Returns(true);
+
+            _bookRepositoryMock.Setup(x => x.BookExists(bookId)).Returns(false);
+
+            //Act
+            Assert.Throws<RecordNotFoundException>(() => _bookService.UpdateBook(bookId, bookToUpdate));
+
+
+            //Assert
+            _bookRepositoryMock.Verify(x => x.Update(It.IsAny<int>(), It.IsAny<Book>()), Times.Never);
         }
 
         [Test]
@@ -208,7 +254,9 @@ namespace Intive.Tests
 
             var booksList = new List<Book> { book, anotherBook };   
 
-            _bookRepositoryMock.Setup(x => x.SearchBook(searchQuery)).Returns(booksList);
+            _bookRepositoryMock.Setup(x => x.SearchBook(searchQuery, Core.Enums.BookOrderBy.Title, false)).Returns(booksList);
+
+
 
             //Act
 
@@ -220,11 +268,6 @@ namespace Intive.Tests
             Assert.AreEqual(2, searchedBooksToEntity.Count);    
             CollectionAssert.AreEquivalent(booksList, searchedBooksToEntity);
         }
-
     }
-
-
-
-
 }
 

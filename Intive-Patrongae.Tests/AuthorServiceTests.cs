@@ -7,7 +7,6 @@ using Intive.Core.Entities.Enums;
 using Intive.Business.Models;
 using Intive.Business.Helpers;
 
-
 namespace Intive.Tests
 {
     public class AuthorServiceTests
@@ -50,8 +49,8 @@ namespace Intive.Tests
         public void GetByName_ReturnsExceptionWhenNameNullOrEmpty()
         {
             {
-                Assert.Throws<ArgumentException>(() => _authorService.GetByName(null));
-                Assert.Throws<ArgumentException>(() => _authorService.GetByName(""));
+                Assert.Throws<ArgumentNullOrEmptyException>(() => _authorService.GetByName(null));
+                Assert.Throws<ArgumentNullOrEmptyException>(() => _authorService.GetByName(""));
             }
 
         }
