@@ -15,7 +15,7 @@ namespace Intive.Core.Repository
         /// Retrieves authors by first or last name
         /// </summary>
         /// <param name="name">First or last name</param>
-        /// <returns></returns>
+        /// <returns>Author entity</returns>
         public Author GetByName(string name)
         {
             return _appDbContext.Authors.FirstOrDefault(x => x.LastName == name || x.FirstName == name);
@@ -24,8 +24,7 @@ namespace Intive.Core.Repository
        /// <summary>
        /// Retrieves all authors
        /// </summary>
-       /// <param name="orderBy">Order type</param>
-       /// <returns></returns>
+       /// <returns>List of Authors</returns>
         public List<Author> GetAll()
         {
             return _appDbContext.Authors.OrderBy(x => x.LastName).ToList();
@@ -34,7 +33,7 @@ namespace Intive.Core.Repository
         /// <summary>
         /// Creates author entity and adds to db
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">Parameters of a new author entity</param>
         public void Create(Author entity)
         {
             _appDbContext.Authors.Add(entity);
@@ -42,10 +41,10 @@ namespace Intive.Core.Repository
         }
 
         /// <summary>
-        ///Checks if there is any author corresponding to the id in the db
+        /// Checks if there is any author corresponding to the id in the db
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Author id</param>
+        /// <returns>True if author with the id exists</returns>
         public bool AuthorExists(int id)
         {
             return _appDbContext.Authors.Any(x => x.Id == id);

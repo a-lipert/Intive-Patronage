@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Intive.Core.Entities.Enums;
 using Intive.Business.Models;
 using Intive.Business.Helpers;
-using static Intive.Business.Services.AuthorService;
 
 namespace Intive.Tests
 {

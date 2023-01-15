@@ -1,7 +1,7 @@
 ﻿using Intive.Business.Helpers;
 using Intive.Business.Models;
+using Intive.Core.Enums;
 using Intive.Core.Repository;
-using static Intive.Business.Services.AuthorService;
 
 namespace Intive.Business.Services
 {
@@ -15,14 +15,20 @@ namespace Intive.Business.Services
             _authorRepository = authorRepository;
         }
 
+        /// <summary>
+        /// Creates book
+        /// </summary>
+        /// <param name="book">Parameters of a new book</param>
+        /// <returns>List of validation errors</returns>
         public List<ValidationError> CreateBook(BookModel book)
-        {            
+        {
             var validationResult = IsValid(book);
+
             if (!validationResult.Any())
             {
                 var bookToCreate = book.ToBookEntity();
 
-                if (_authorRepository.Exists(book.AuthorId))
+                if (_authorRepository.AuthorExists(book.AuthorId))
                 {
                     bookToCreate.BookAuthors.Add(new Core.Entities.BookAuthor { AuthorId = book.AuthorId });
                 }
@@ -34,9 +40,20 @@ namespace Intive.Business.Services
         }
 
 
+        /// <summary>
+        /// Updates a book
+        /// </summary>
+        /// <param name="id">Id of a book to update</param>
+        /// <param name="book">Parameters of updated book</param>
+        /// <returns>Validation errors</returns>
         public List<ValidationError> UpdateBook(int id, BookModel book)
         {
             var validationResult = IsValid(book);
+            if (!_bookRepository.BookExists(id))
+            {
+                throw new RecordNotFoundException(nameof(book), id);
+            }        
+
             if (!validationResult.Any() && id > 0)
             {
                 var bookToUpdate = book.ToBookEntity();
@@ -45,8 +62,94 @@ namespace Intive.Business.Services
 
             return validationResult;
         }
+      
+        /// <summary>
+        /// Gets book by id
+        /// </summary>
+        /// <param name="id">Book id</param>
+        /// <returns>Book</returns>
+        public BookModel GetById(int id)
+        {
+            if (id < 1)
+            {
+                return null;
+            }
 
-        private List<ValidationError> IsValid(BookModel book)
+            var book = _bookRepository.GetById(id);
+            return book.ToBookModel();
+        }
+
+        /// <summary>
+        /// Gets book by title
+        /// </summary>
+        /// <param name="title">Book title</param>
+        /// <returns>Book model</returns>
+        /// <exception cref="ArgumentNullOrEmptyException">Thrown if title is null or empty</exception>
+        public BookModel GetByTitle(string title)
+        {
+            if (string.IsNullOrEmpty(title))
+            {
+                throw new ArgumentNullOrEmptyException("title");
+            }
+
+            var book = _bookRepository.GetByTitle(title);
+            if (book == null)
+            {
+                return null;
+            }
+
+            return book.ToBookModel();
+        }
+
+        /// <summary>
+        /// Retrieves list of all books
+        /// </summary>
+        /// <returns>All boks</returns>
+        public List<BookModel> GetAll()
+        {
+            var books = _bookRepository.GetAll();
+            return books.Select(x => x.ToBookModel()).ToList();
+        }
+
+        /// <summary>
+        /// Deletes book by id
+        /// </summary>
+        /// <param name="id">Id of a book to delete</param>
+        public void DeleteBook(int id)
+        {
+            if (!_bookRepository.BookExists(id))
+            {
+                throw new ArgumentNullOrEmptyException("id");
+            }
+
+             _bookRepository.Delete(id);
+        }
+
+
+        /// <summary>
+        ///Search books by search query
+        /// </summary>
+        /// <param name="query">Search query</param>
+        /// <returns>Books containing query</returns>
+        /// <exception cref="ArgumentNullOrEmptyException">Thrown if the query is null or empty</exception>
+        public IEnumerable<BookModel> SearchBook(string query)
+        {
+            var books = _bookRepository.SearchBook(query, BookOrderBy.Title, false);
+
+            if (string.IsNullOrEmpty(query))
+            {
+                throw new ArgumentNullOrEmptyException("query");
+            }
+
+            if (!books.Any())
+            {
+                return null;
+            }
+
+            return books.Select(x => x.ToBookModel()).ToList();
+        }
+
+        private static List<ValidationError> IsValid(BookModel book)
         {
             var validationResults = new List<ValidationError>();
 
@@ -70,59 +173,6 @@ namespace Intive.Business.Services
             return validationResults;
 
         }
-
-        public BookModel GetById(int id)
-        {
-            if (id < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
-            }
-
-            var book = _bookRepository.GetById(id);
-            return book.ToBookModel();
-        }
-        public BookModel GetByTitle(string title)
-        {
-            if (string.IsNullOrEmpty(title))
-            {
-                throw new ArgumentNullOrEmptyException("title");
-            }
-
-            var book = _bookRepository.GetByTitle(title);
-            if (book == null)
-            {
-                return null;
-            }
-
-            return book.ToBookModel();
-        }
-
-        public List<BookModel> GetAll()
-        {
-            var books = _bookRepository.GetAll();
-            return books.Select(x => x.ToBookModel()).ToList();
-        }
-
-        public void DeleteBook(int id)
-        {
-            if (id < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than 0");
-            }
-
-            _bookRepository.Delete(id);
-        }
-
-        public IEnumerable<BookModel> SearchBook(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-            {
-                throw new ArgumentNullOrEmptyException("query");
-            }
-
-            var books = _bookRepository.SearchBook(query);
-            return books.Select(x => x.ToBookModel()).ToList();
-        }
     }
-} 
+}
 

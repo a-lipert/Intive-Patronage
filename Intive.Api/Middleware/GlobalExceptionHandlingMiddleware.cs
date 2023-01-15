@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using Intive.Business.Helpers;
+using System.Net;
 using System.Text.Json;
-using static Intive.Business.Services.AuthorService;
 
 namespace Intive.Api.Middleware
 {
@@ -12,8 +12,8 @@ namespace Intive.Api.Middleware
         {
             _next = next;
         }
-
-        public async Task InvokeAsync(HttpContext context)
+        
+        public async Task Invoke(HttpContext context)
         {
             try
             {
@@ -21,19 +21,25 @@ namespace Intive.Api.Middleware
             }
             catch (Exception ex)
             {
-                if (ex is ArgumentNullOrEmptyException) throw;
+                var response = context.Response;
+                response.ContentType = "application/json";
 
-                await HandleExceptionAsync(context, ex);
+                switch (ex)
+                {
+                    case ArgumentNullOrEmptyException:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    case RecordNotFoundException:
+                        response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    default:
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        break;
+                }
+
+                var result = JsonSerializer.Serialize(new { message = ex?.Message });
+                await response.WriteAsync(result);
             }
-        }
-
-        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
-        {
-            var code = HttpStatusCode.InternalServerError;
-            var result = JsonSerializer.Serialize(new { error = "An internal server error has occured" });
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)code;
-            return context.Response.WriteAsync(result);
         }
     }
 }

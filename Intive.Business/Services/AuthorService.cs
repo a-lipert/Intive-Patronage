@@ -12,16 +12,16 @@ namespace Intive.Business.Services
             _authorRepository = authorRepository;
         }
 
+        /// <summary>
+        /// Creates author
+        /// </summary>
+        /// <param name="author">Parameters of a new author</param>
+        /// <returns>List of validation errors</returns>
         public List<ValidationError> CreateAuthor(AuthorModel author)
         {
             var validationResult = IsValid(author);
 
-            if (validationResult.Any())
-            {
-                return validationResult;
-            }
-
-            else 
+            if (!validationResult.Any())
             {
                 var authorToCreate = author.ToAuthorEntity();
                 _authorRepository.Create(authorToCreate);
@@ -30,6 +30,10 @@ namespace Intive.Business.Services
             return validationResult;
         }
 
+        /// <summary>
+        /// Retrieves all authors
+        /// </summary>
+        /// <returns>All authors</returns>
         public List<AuthorModel> GetAll()
         {
             var authors = _authorRepository.GetAll();
@@ -37,15 +41,24 @@ namespace Intive.Business.Services
             return authors.Select(x => x.ToAuthorModel()).ToList();
         }
 
+        /// <summary>
+        /// Gets author by name
+        /// </summary>
+        /// <param name="name">First or last name of the author</param>
+        /// <returns>Author model</returns>
+        /// <exception cref="ArgumentNullOrEmptyException">Thrown if name property is null or empty</exception>
         public AuthorModel GetByName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullOrEmptyException("name");
+                throw new ArgumentNullOrEmptyException("book");
             }
 
             var author = _authorRepository.GetByName(name);
-            if (author == null) return null;
+            if (author == null)
+            {
+                return null;
+            }
 
             return author.ToAuthorModel();
         }
@@ -66,14 +79,6 @@ namespace Intive.Business.Services
                 validationResults.Add(new ValidationError(ValidationConstants.FieldIsRequired, nameof(author.BirthDate)));
 
             return validationResults;
-        }
-
-        public class ArgumentNullOrEmptyException : Exception
-        {
-            public ArgumentNullOrEmptyException(string propertyName) : base($"Property {propertyName} cannot by null or empty.") { }
-        }
-
-
-
+        }   
     }
 }
